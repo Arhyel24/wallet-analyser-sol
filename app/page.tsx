@@ -1,101 +1,144 @@
+"use client";
 import Image from "next/image";
+import { SyntheticEvent, useState } from "react";
+import getremark from "./actions/get-remark";
+import { log } from "console";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [wallet, setWallet] = useState("");
+  const [balance, setBalance] = useState("");
+  const [review, setReview] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
+  async function analyzeData(e: SyntheticEvent) {
+    const apiKey = process.env.QN_API_KEY as string;
+
+    setError("");
+    e.preventDefault();
+    setLoading(true);
+
+    if (!wallet || wallet.length !== 44) {
+      setError(
+        "Invalid wallet address. It must be 44 characters long and not empty."
+      );
+      setLoading(false);
+      return;
+    }
+
+    const data = {
+      network: "solana-mainnet",
+      dataset: "block",
+      blockNumber: 19532341,
+      user_data: {
+        max_fee: 0.5,
+        wallet_address: wallet,
+      },
+    };
+
+    try {
+      const res = await fetch(
+        "https://api.quicknode.com/functions/rest/v1/functions/6f4a6185-15c5-4327-8e9c-3d32ad59d83b/call?result_only=true",
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            "x-api-key": apiKey,
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+
+      const bal = await res.json();
+
+      const review = await getremark(bal.balance);
+
+      setBalance(bal.balance);
+      setReview(review);
+    } catch (error) {
+      setError("Something went wrong, please try again!");
+      console.error("Error details:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+  return (
+    <div className="bg-blue-300 dark:bg-gray-900 dark:text-gray-200">
+      <nav className="bg-blue-600 dark:bg-gray-800 p-4">
+        <div className="container mx-auto flex justify-between items-center">
+          <a href="#" className="text-white text-lg font-bold">
+            SOLTRACE
           </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+          <ul className="flex space-x-4">
+            <li>
+              <a href="#" className="text-white">
+                About
+              </a>
+            </li>
+            <li>
+              <a href="#" className="text-white">
+                Support
+              </a>
+            </li>
+          </ul>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </nav>
+
+      <header className="bg-blue-500 dark:bg-gray-700 text-white py-8 flex flex-column item-center justify-center">
+        <div className="container mx-auto text-center">
+          <h1 className="text-4xl font-bold">
+            Get feedback on your SOL wallet activities!
+          </h1>
+          <p className="mt-2">Analyze your data with ease</p>
+          <form
+            id="analysis-form"
+            className="w-[80%] mx-auto mt-10"
+            onSubmit={analyzeData}
+            method="POST"
+          >
+            <div className="mb-4">
+              <input
+                type="text"
+                value={wallet}
+                onChange={(e) => setWallet(e.target.value)}
+                className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded mt-1 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200"
+                placeholder="Enter your wallet address"
+              />
+            </div>
+            {error && <p className="text-red-300">{error}</p>}
+            <button
+              disabled={loading}
+              type="submit"
+              className="bg-blue-600 dark:bg-blue-500 text-white px-4 py-2 rounded"
+            >
+              {loading ? "Loading..." : "Analyze Wallet"}
+            </button>
+          </form>
+        </div>
+      </header>
+
+      <section className="py-8">
+        <div className="container mx-auto">
+          <div className="bg-white dark:bg-gray-800 p-6 rounded shadow-md">
+            <h2 className="text-2xl font-bold mb-4">Analysis Result</h2>
+            <div id="result" className="text-gray-700 dark:text-gray-300">
+              {balance ? (
+                <>
+                  <p>{balance}</p>
+                  <p>{review}</p>
+                </>
+              ) : (
+                <p>Enter wallet to get analysis!</p>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
