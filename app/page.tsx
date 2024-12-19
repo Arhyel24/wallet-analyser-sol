@@ -10,7 +10,7 @@ export default function Home() {
   const [error, setError] = useState("");
 
   async function analyzeData(e: SyntheticEvent) {
-    const apiKey = process.env.QN_API_KEY as string;
+    const apiKey = process.env.NEXT_PUBLIC_QNAPIKEY!;
 
     setError("");
     e.preventDefault();
