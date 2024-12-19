@@ -15,10 +15,11 @@ export default async function getremark(msg: string) {
     const result = await model.generateContent(prompt);
     const text = await result.response.text();
 
-    console.log(text);
+    // console.log(text);
 
     return text;
   } catch (error) {
+    console.error(error);
     return "Failed to generate a response";
   }
 }

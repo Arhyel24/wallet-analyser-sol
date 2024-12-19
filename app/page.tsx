@@ -1,8 +1,6 @@
 "use client";
-import Image from "next/image";
 import { SyntheticEvent, useState } from "react";
 import getremark from "./actions/get-remark";
-import { log } from "console";
 
 export default function Home() {
   const [wallet, setWallet] = useState("");
