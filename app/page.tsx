@@ -10,6 +10,11 @@ export default function Home() {
   const [review, setReview] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [difficulty, setDifficulty] = useState("noobie");
+
+  const handleChange = (event) => {
+    setDifficulty(event.target.value);
+  };
 
   async function analyzeData(e: SyntheticEvent) {
     const apiKey = process.env.NEXT_PUBLIC_QNAPIKEY!;
@@ -35,8 +40,6 @@ export default function Home() {
         wallet_address: wallet,
       },
     };
-
-    console.log("processing");
 
     try {
       const res = await fetch(
@@ -94,10 +97,11 @@ export default function Home() {
         })
       );
 
-      console.log("tokens: ", tokens);
+      // console.log("tokens: ", tokens);
 
       const review = await getremark(
-        `${response.balance}, ${tokens.toString()}`
+        `${response.balance}, ${tokens.toString()}`,
+        difficulty
       );
 
       setBalance(response.balance);
@@ -134,9 +138,9 @@ export default function Home() {
       <header className="bg-blue-500 dark:bg-gray-700 text-white py-8 flex flex-column item-center justify-center">
         <div className="container mx-auto text-center">
           <h1 className="text-4xl font-bold">
-            Get feedback on your SOL wallet activities!
+            Get feedback on your SOL wallet holdings!
           </h1>
-          <p className="mt-2">Analyze your data with ease</p>
+          <p className="mt-2">Buckle up for some great response</p>
           <form
             id="analysis-form"
             className="w-[80%] mx-auto mt-10"
@@ -151,6 +155,18 @@ export default function Home() {
                 className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded mt-1 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200"
                 placeholder="Enter your wallet address"
               />
+            </div>
+            <div className="p-3 font-sans">
+              <h2 className="text-sm mb-1">Select Your Review Level</h2>
+              <select
+                value={difficulty}
+                onChange={handleChange}
+                className="p-2 text-sm rounded border transition-colors duration-300 dark:bg-gray-700 dark:border-gray-600 dark:text-white bg-white border-gray-300 text-black"
+              >
+                <option value="noobie">Noobie</option>
+                <option value="pro">Pro</option>
+                <option value="savage">Savage</option>
+              </select>
             </div>
             {error && <p className="text-red-300">{error}</p>}
             <button
