@@ -1,6 +1,8 @@
 "use client";
 import { SyntheticEvent, useState } from "react";
 import getremark from "./actions/get-remark";
+import { PublicKey } from "@solana/web3.js";
+import { Client } from "@solflare-wallet/utl-sdk";
 
 export default function Home() {
   const [wallet, setWallet] = useState("");
@@ -34,6 +36,8 @@ export default function Home() {
       },
     };
 
+    console.log("processing");
+
     try {
       const res = await fetch(
         "https://api.quicknode.com/functions/rest/v1/functions/6f4a6185-15c5-4327-8e9c-3d32ad59d83b/call?result_only=true",
@@ -52,11 +56,51 @@ export default function Home() {
         throw new Error(`HTTP error! status: ${res.status}`);
       }
 
-      const bal = await res.json();
+      const response = await res.json();
 
-      const review = await getremark(bal.balance);
+      // console.log(response);
 
-      setBalance(bal.balance);
+      const accounts = response.accounts;
+
+      //console.log(accounts);
+
+      const tokens = await Promise.all(
+        accounts.map(async (account) => {
+          // Parse the account data
+          const parsedAccountInfo = account.account.data;
+          const mintAddress = parsedAccountInfo["parsed"]["info"]["mint"];
+          const tokenBalance =
+            parsedAccountInfo["parsed"]["info"]["tokenAmount"]["uiAmount"];
+
+          const mint = new PublicKey(mintAddress);
+          const utl = new Client();
+
+          // Fetch the mint information
+          const token = await utl.fetchMint(mint);
+
+          // return {
+          //   name: token?.name || "Unknown Token",
+          //   img: token?.logoURI || null,
+          //   symbol: token?.symbol || "Unknown",
+          //   mint: mint.toString(),
+          //   tokenBalance,
+          // };
+
+          return `Name: ${token?.name || "Unknown Token"}, 
+            Image: ${token?.logoURI || "No Image"}, 
+            Symbol: ${token?.symbol || "Unknown"}, 
+            Mint: ${mint.toString()}, 
+            Token Balance: ${tokenBalance}`;
+        })
+      );
+
+      console.log("tokens: ", tokens);
+
+      const review = await getremark(
+        `${response.balance}, ${tokens.toString()}`
+      );
+
+      setBalance(response.balance);
       setReview(review);
     } catch (error) {
       setError("Something went wrong, please try again!");
@@ -114,7 +158,7 @@ export default function Home() {
               type="submit"
               className="bg-blue-600 dark:bg-blue-500 text-white px-4 py-2 rounded"
             >
-              {loading ? "Loading..." : "Analyze Wallet"}
+              {loading ? "Analysing..." : "Analyze Wallet"}
             </button>
           </form>
         </div>

@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SOLTRACE",
-  description: "Created by Enoch Philip",
+  title: "Soltrace",
+  description: "Created by Enoch Philip, a quick analysis for your wallet",
 };
 
 export default function RootLayout({
