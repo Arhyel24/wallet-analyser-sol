@@ -30,7 +30,7 @@ export default function Result({
           <DialogTitle>Analysis Result</DialogTitle>
           <DialogDescription>
             Merry christmas and happy new year in advance, enjoy your review,
-            don't forget to share on your feed!
+            dont forget to share on your feed!
           </DialogDescription>
         </DialogHeader>
 

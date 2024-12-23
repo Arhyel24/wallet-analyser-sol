@@ -62,7 +62,7 @@ export default function Support() {
         <DialogHeader>
           <DialogTitle>Support Developer</DialogTitle>
           <DialogDescription>
-            If you have any questions or need assistance, please don't hesitate
+            If you have any questions or need assistance, please dont hesitate
             to reach out to @earhyel on X (twitter).
           </DialogDescription>
         </DialogHeader>
