@@ -2,7 +2,7 @@
 import { SyntheticEvent, useState } from "react";
 import { PublicKey } from "@solana/web3.js";
 import { Client } from "@solflare-wallet/utl-sdk";
-import getremark from "./actions/get-remark";
+import getremark from "../actions/get-remark";
 import About from "@/components/about";
 import Support from "@/components/support";
 import { ModeToggle } from "@/components/ui/darkmode-toggle";
