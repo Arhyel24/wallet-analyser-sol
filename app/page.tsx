@@ -9,6 +9,7 @@ import Support from "@/components/support";
 import { Coins, DollarSign, History } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PieActiveArc from "@/components/pie-chart";
+import Link from "next/link";
 
 export default function Home() {
   const [wallet, setWallet] = useState("");
@@ -116,7 +117,7 @@ export default function Home() {
   return (
     <>
       <div className="p-4 fixed w-full top-2 flex z-50 justify-between items-center overflow-hidden px-8 md:px-20 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 bg-purple-950">
-        <a href="/" className="flex gap-2 items-center justify-center">
+        <Link href="/" className="flex gap-2 items-center justify-center">
           <Image
             src="/logo.jpg"
             width={100}
@@ -125,7 +126,7 @@ export default function Home() {
             className="h-10 w-10"
           />
           <a className="text-white text-lg font-bold">SOLTRACE</a>
-        </a>
+        </Link>
         <ul className="flex space-x-1 md:space-x-4">
           <li>
             <About />
