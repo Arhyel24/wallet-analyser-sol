@@ -52,36 +52,35 @@ export default function Support() {
       <DialogTrigger asChild>
         <Button
           size="sm"
-          variant="outline"
-          className="bg-blue-600 dark:bg-gray-800"
+          className="bg-transparent text-white dark:text-white"
         >
           Support
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md bg-white dark:bg-gray-800 p-6 rounded shadow-md">
+      <DialogContent className="sm:max-w-md bg-purple-800 p-6 rounded shadow-md">
         <DialogHeader>
-          <DialogTitle>Support Developer</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="text-purple-100">Support Developer</DialogTitle>
+          <DialogDescription className="text-purple-200">
             If you have any questions or need assistance, please dont hesitate
             to reach out to @earhyel on X (twitter).
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-2 flex flex-col items-center">
-          <p>Suprise your developer with something 🙊</p>
+          <p className="text-purple-200">Suprise your developer with something 🙊</p>
 
           <form
             method="post"
             className="w-[90%] mx-auto mt-10 space-y-2"
             onSubmit={handleClick}
           >
-            <div className=" gap-2 flex">
+            <div className="flex rounded-md overflow-hidden">
               <select
                 value={currency}
                 onChange={(e) => setCurrency(e.target.value)}
-                className="p-2 text-sm rounded border transition-colors duration-300 dark:bg-gray-700 dark:border-gray-600 dark:text-white bg-white border-gray-300 text-black"
+                className="px-2 text-sm transition-colors duration-300  text-white bg-purple-500 outline-none"
               >
-                <option value="ngn">NGN</option>
-                <option value="usd">USD</option>
+                <option value="ngn" className="bg-purple-500 text-white rounded-none">NGN</option>
+                <option value="usd" className="bg-purple-500 text-white rounded-none">USD</option>
               </select>
               <input
                 type="number"
@@ -92,12 +91,12 @@ export default function Support() {
                 }
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                className="flex-1 p-2 border border-gray-300 dark:border-gray-600 rounded mt-1 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200"
+                className="flex-1 p-2 border bg-white text-purple-500"
               />
             </div>
             <button
               type="submit"
-              className="bg-blue-600 dark:bg-blue-500 text-white px-4 py-2 rounded"
+              className="bg-purple-600 text-white px-4 py-2 rounded"
             >
               Suprise
             </button>
@@ -106,7 +105,7 @@ export default function Support() {
         </div>
         <DialogFooter className="sm:justify-start">
           <DialogClose asChild>
-            <Button type="button" variant="secondary">
+            <Button type="button" className="text-white bg-purple-600">
               Close
             </Button>
           </DialogClose>
