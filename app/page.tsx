@@ -1,25 +1,22 @@
 "use client";
 import { SyntheticEvent, useState } from "react";
+import Image from "next/image";
 import { PublicKey } from "@solana/web3.js";
 import { Client } from "@solflare-wallet/utl-sdk";
 import getremark from "./actions/get-remark";
 import About from "@/components/about";
 import Support from "@/components/support";
-import { ModeToggle } from "@/components/ui/darkmode-toggle";
-import Result from "@/components/result-modal";
+import { Coins, DollarSign, History } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import PieActiveArc from "@/components/pie-chart";
 
 export default function Home() {
   const [wallet, setWallet] = useState("");
   const [balance, setBalance] = useState("");
   const [review, setReview] = useState("");
-  const [modalOpen, setModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState("This is an error");
   const [difficulty, setDifficulty] = useState("noobie");
-
-  const handleChange = (event) => {
-    setDifficulty(event.target.value);
-  };
 
   const analyzeData = async (event: SyntheticEvent) => {
     const apiKey = process.env.NEXT_PUBLIC_QNAPIKEY!;
@@ -32,8 +29,6 @@ export default function Home() {
       setLoading(false);
       return;
     }
-
-    setModalOpen(true);
 
     const data = {
       network: "solana-mainnet",
@@ -119,78 +114,220 @@ export default function Home() {
   };
 
   return (
-    <div className="bg-blue-300 fixed w-full dark:bg-gray-900 dark:text-gray-200">
-      <nav className="bg-blue-600 dark:bg-gray-800 p-4">
-        <div className="container mx-auto flex justify-between items-center">
-          <a href="#" className="text-white text-lg font-bold">
-            SOLTRACE
-          </a>
-          <ul className="flex space-x-4">
-            <li>
-              <About />
-            </li>
-            <li>
-              <Support />
-            </li>
-            <li>
-              <ModeToggle />
-            </li>
-          </ul>
-        </div>
-      </nav>
+    <>
+      <div className="p-4 fixed w-full top-2 flex z-50 justify-between items-center overflow-hidden px-8 md:px-20 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 bg-purple-950">
+        <a href="/" className="flex gap-2 items-center justify-center">
+          <Image
+            src="/logo.jpg"
+            width={100}
+            height={100}
+            alt="logo"
+            className="h-10 w-10"
+          />
+          <a className="text-white text-lg font-bold">SOLTRACE</a>
+        </a>
+        <ul className="flex space-x-1 md:space-x-4">
+          <li>
+            <About />
+          </li>
+          <li>
+            <Support />
+          </li>
+        </ul>
+      </div>
+      <div
+        className="px-8 md:px-20 text-white flex justify-center w-full flex-col gap-4 transition-all
+                      duration-300 scroll-smooth"
+      >
+        <div className="flex flex-column item-center justify-center mt-28">
+          <div className="container mx-auto text-center flex flex-col justify-center gap-4">
+            <h1 className="text-4xl font-bold">
+              Get feedback on your SOL wallet holdings!
+            </h1>
+            <p className="mt-2 text-xl text-purple-100">
+              Buckle up for some great response
+            </p>
 
-      <header className="bg-blue-500 dark:bg-gray-700 text-white py-8 flex min-h-screen flex-column item-center justify-center">
-        <div className="container mx-auto text-center">
-          <h1 className="text-4xl font-bold">
-            Get feedback on your SOL wallet holdings!
-          </h1>
-          <p className="mt-2">Buckle up for some great response</p>
-          <form
-            id="analysis-form"
-            className="w-[80%] mx-auto mt-10"
-            method="POST"
-            onSubmit={analyzeData}
-          >
-            <div className="mb-4">
+            <div className="flex flex-wrap justify-center items-center gap-4">
+              <div>
+                <p className="text-lg text-purple-200">
+                  Select response level:-
+                </p>
+              </div>
+              <div className="flex gap-2">
+                <button
+                  className={`p-3 border-2 border-purple-600 rounded-md text-purple-100 text-sm ${
+                    difficulty === "noobie" && "bg-purple-600"
+                  }`}
+                  onClick={() => setDifficulty("noobie")}
+                >
+                  Noobie
+                </button>
+                <button
+                  className={`p-3 border-2 border-purple-600 rounded-md text-purple-100 text-sm ${
+                    difficulty === "pro" && "bg-purple-600"
+                  }`}
+                  onClick={() => setDifficulty("pro")}
+                >
+                  Pro
+                </button>
+                <button
+                  className={`p-3 border-2 border-purple-600 rounded-md text-purple-100 text-sm ${
+                    difficulty === "savage" && "bg-purple-600"
+                  }`}
+                  onClick={() => setDifficulty("savage")}
+                >
+                  Savage
+                </button>
+              </div>
+            </div>
+
+            <div
+              className="w-full flex border-2 h-20
+          items-stretch justify-center relative rounded-xl overflow-hidden p-0 border-purple-400"
+            >
               <input
                 type="text"
                 value={wallet}
                 onChange={(e) => setWallet(e.target.value)}
-                className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded mt-1 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200"
-                placeholder="Enter your wallet address"
+                className="flex-1 p-4 h-20 bg-purple-950 text-purple-200 outline-none m-0"
+                placeholder="Enter your SOL wallet address"
               />
-              {error && <p className="text-red-300">{error}</p>}
-            </div>
-            <div className="p-3 font-sans">
-              <h2 className="text-sm mb-1">Select Your Review Level</h2>
-              <select
-                value={difficulty}
-                onChange={handleChange}
-                className="p-2 text-sm rounded border transition-colors duration-300 dark:bg-gray-700 dark:border-gray-600 dark:text-white bg-white border-gray-300 text-black"
+              <button
+                disabled={loading}
+                type="submit"
+                className="bg-purple-600 text-white px-4"
+                onClick={analyzeData}
               >
-                <option value="noobie">Noobie</option>
-                <option value="pro">Pro</option>
-                <option value="savage">Savage</option>
-              </select>
+                {loading ? "Analyzing..." : "Analyze"}
+              </button>
             </div>
 
-            <button
-              disabled={loading}
-              type="submit"
-              className="bg-blue-600 dark:bg-blue-500 text-white px-4 py-2 rounded"
-            >
-              {loading ? "Analysing..." : "Analyze Wallet"}
-            </button>
-          </form>
+            {error && <p className="text-red-300 text-xs">{error}</p>}
+          </div>
         </div>
-        <Result
+        <hr className="outline-none border-dashed border border-purple-200" />
+
+        <Tabs defaultValue="review" className="w-full">
+          <TabsList className="w-full flex bg-purple-800 dark:bg-purple-800 ">
+            <TabsTrigger
+              value="review"
+              className="flex-1 text-center bg-purple-800
+             dark:bg-purple-800 text-white dark:text-white"
+            >
+              Review
+            </TabsTrigger>
+            <TabsTrigger
+              value="analytics"
+              className="flex-1 text-center bg-purple-800
+             dark:bg-purple-800 text-white dark:text-white"
+            >
+              Analytics
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent
+            value="review"
+            className="border border-purple-500 p-2 rounded-md"
+          >
+            <div className="w-full flex flex-col gap-4">
+              <h2 className="text-xl">Review</h2>
+              <div className="border-2 border-purple-400 rounded-lg w-full p-2">
+                {review ? (
+                  <>
+                    <Image
+                      src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f9d0/512.webp"
+                      width={100}
+                      height={100}
+                      alt="emicon"
+                    />
+                    <p className="text-sm text-purple-50">{balance}</p>
+                    <p className="text-sm text-purple-50">{review}</p>
+                  </>
+                ) : (
+                  <p className="text-sm text-purple-50 text-center">
+                    No review yet, please connect or enter your wallet address
+                  </p>
+                )}
+              </div>
+            </div>
+          </TabsContent>
+          <TabsContent
+            value="analytics"
+            className="border border-purple-500 p-2 rounded-md"
+          >
+            <div className="w-full flex flex-col gap-4">
+              <h2 className="text-xl">Analytics</h2>
+              <div className="border-2 border-purple-400 rounded-lg w-full p-2">
+                <div className="flex flex-col w-full">
+                  <h3>General Info</h3>
+                  <div className="flex flex-col md:flex-row  gap-4 border border-purple-600 p-4 rounded-md  bg-purple-900">
+                    <div className="flex flex-nowrap flex-1 gap-2">
+                      <div>
+                        <DollarSign
+                          className="h-full bg-purple-200 rounded-sm p-1 text-purple-600"
+                          size={40}
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-purple-100 text-xs">
+                          Estimated Balance
+                        </p>
+                        <p className="text-lg text-white">$200,000</p>
+                      </div>
+                    </div>
+                    <div className="flex flex-nowrap flex-1 gap-2">
+                      <div>
+                        <Coins
+                          className="h-full bg-purple-200 rounded-sm p-1 text-purple-600"
+                          size={40}
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-purple-100 text-xs">
+                          Token Types Hold
+                        </p>
+                        <p className="text-lg text-white">8</p>
+                      </div>
+                    </div>
+                    <div className="flex flex-nowrap flex-1 gap-2">
+                      <div>
+                        <History
+                          className="h-full bg-purple-200 rounded-sm p-1 text-purple-600"
+                          size={40}
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-purple-100 text-xs">Transactions</p>
+                        <p className="text-lg text-white">2,101</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex flex-col w-full mt-4">
+                  <h3>Tokens Metrics</h3>
+                  <div className="flex flex-col gap-4 border border-purple-600 p-4 rounded-md bg-purple-900">
+                    <div className="flex flex-col md:flex-row gap-4 rounded-sm">
+                      <div className="flex flex-nowrap flex-1 p-6 rounded-md bg-purple-950">
+                        <PieActiveArc />
+                      </div>
+                      <div className="flex flex-nowrap flex-1 p-6 rounded-md bg-purple-950"></div>
+                    </div>
+                    <div className="border border-purple-600 p-4 h-20 rounded-sm"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </TabsContent>
+        </Tabs>
+
+        {/* <Result
           modalOpen={modalOpen}
           setModalOpen={setModalOpen}
           balance={balance}
           review={review}
           loading={loading}
-        />
-      </header>
-    </div>
+        /> */}
+      </div>
+    </>
   );
 }

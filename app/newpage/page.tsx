@@ -8,19 +8,15 @@ import About from "@/components/about";
 import Support from "@/components/support";
 import { Coins, DollarSign, History } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import PieActiveArc from "@/components/pie-chart";
 
 export default function Home() {
   const [wallet, setWallet] = useState("");
   const [balance, setBalance] = useState("");
   const [review, setReview] = useState("");
-  const [modalOpen, setModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("This is an error");
   const [difficulty, setDifficulty] = useState("noobie");
-
-  const handleChange = (event) => {
-    setDifficulty(event.target.value);
-  };
 
   const analyzeData = async (event: SyntheticEvent) => {
     const apiKey = process.env.NEXT_PUBLIC_QNAPIKEY!;
@@ -33,8 +29,6 @@ export default function Home() {
       setLoading(false);
       return;
     }
-
-    setModalOpen(true);
 
     const data = {
       network: "solana-mainnet",
@@ -246,6 +240,7 @@ export default function Home() {
                       height={100}
                       alt="emicon"
                     />
+                    <p className="text-sm text-purple-50">{balance}</p>
                     <p className="text-sm text-purple-50">{review}</p>
                   </>
                 ) : (
@@ -312,8 +307,10 @@ export default function Home() {
                   <h3>Tokens Metrics</h3>
                   <div className="flex flex-col gap-4 border border-purple-600 p-4 rounded-md bg-purple-900">
                     <div className="flex flex-col md:flex-row gap-4 rounded-sm">
-                      <div className="flex flex-nowrap flex-1 h-28  rounded-md bg-purple-950"></div>
-                      <div className="flex flex-nowrap flex-1 h-28 rounded-md bg-purple-950"></div>
+                      <div className="flex flex-nowrap flex-1 p-6 rounded-md bg-purple-950">
+                        <PieActiveArc />
+                      </div>
+                      <div className="flex flex-nowrap flex-1 p-6 rounded-md bg-purple-950"></div>
                     </div>
                     <div className="border border-purple-600 p-4 h-20 rounded-sm"></div>
                   </div>
