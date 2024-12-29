@@ -6,9 +6,6 @@ import { Client } from "@solflare-wallet/utl-sdk";
 import getremark from "./actions/get-remark";
 import About from "@/components/about";
 import Support from "@/components/support";
-import { Coins, DollarSign, History } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import PieActiveArc from "@/components/pie-chart";
 import Link from "next/link";
 
 export default function Home() {
@@ -209,7 +206,7 @@ export default function Home() {
         </div>
         <hr className="outline-none border-dashed border border-purple-200" />
 
-        <div className="w-full flex flex-col gap-4 p-4 border border-purple-400 rounded-md">
+        <div className="w-full flex flex-col gap-4 p-4 border border-purple-400 rounded-md mb-8">
           <h2 className="text-xl">Review</h2>
           <div className="border-2 border-purple-400 rounded-lg w-full p-2">
             {review ? (
