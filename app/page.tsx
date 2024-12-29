@@ -209,117 +209,27 @@ export default function Home() {
         </div>
         <hr className="outline-none border-dashed border border-purple-200" />
 
-        <Tabs defaultValue="review" className="w-full">
-          <TabsList className="w-full flex bg-purple-800 dark:bg-purple-800 ">
-            <TabsTrigger
-              value="review"
-              className="flex-1 text-center bg-purple-800
-             dark:bg-purple-800 text-white dark:text-white"
-            >
-              Review
-            </TabsTrigger>
-            <TabsTrigger
-              value="analytics"
-              className="flex-1 text-center bg-purple-800
-             dark:bg-purple-800 text-white dark:text-white"
-            >
-              Analytics
-            </TabsTrigger>
-          </TabsList>
-          <TabsContent
-            value="review"
-            className="border border-purple-500 p-2 rounded-md"
-          >
-            <div className="w-full flex flex-col gap-4">
-              <h2 className="text-xl">Review</h2>
-              <div className="border-2 border-purple-400 rounded-lg w-full p-2">
-                {review ? (
-                  <>
-                    <Image
-                      src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f9d0/512.webp"
-                      width={100}
-                      height={100}
-                      alt="emicon"
-                    />
-                    <p className="text-sm text-purple-50">{balance}</p>
-                    <p className="text-sm text-purple-50">{review}</p>
-                  </>
-                ) : (
-                  <p className="text-sm text-purple-50 text-center">
-                    No review yet, please connect or enter your wallet address
-                  </p>
-                )}
-              </div>
-            </div>
-          </TabsContent>
-          <TabsContent
-            value="analytics"
-            className="border border-purple-500 p-2 rounded-md"
-          >
-            <div className="w-full flex flex-col gap-4">
-              <h2 className="text-xl">Analytics</h2>
-              <div className="border-2 border-purple-400 rounded-lg w-full p-2">
-                <div className="flex flex-col w-full">
-                  <h3>General Info</h3>
-                  <div className="flex flex-col md:flex-row  gap-4 border border-purple-600 p-4 rounded-md  bg-purple-900">
-                    <div className="flex flex-nowrap flex-1 gap-2">
-                      <div>
-                        <DollarSign
-                          className="h-full bg-purple-200 rounded-sm p-1 text-purple-600"
-                          size={40}
-                        />
-                      </div>
-                      <div className="flex-1">
-                        <p className="text-purple-100 text-xs">
-                          Estimated Balance
-                        </p>
-                        <p className="text-lg text-white">$200,000</p>
-                      </div>
-                    </div>
-                    <div className="flex flex-nowrap flex-1 gap-2">
-                      <div>
-                        <Coins
-                          className="h-full bg-purple-200 rounded-sm p-1 text-purple-600"
-                          size={40}
-                        />
-                      </div>
-                      <div className="flex-1">
-                        <p className="text-purple-100 text-xs">
-                          Token Types Hold
-                        </p>
-                        <p className="text-lg text-white">8</p>
-                      </div>
-                    </div>
-                    <div className="flex flex-nowrap flex-1 gap-2">
-                      <div>
-                        <History
-                          className="h-full bg-purple-200 rounded-sm p-1 text-purple-600"
-                          size={40}
-                        />
-                      </div>
-                      <div className="flex-1">
-                        <p className="text-purple-100 text-xs">Transactions</p>
-                        <p className="text-lg text-white">2,101</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex flex-col w-full mt-4">
-                  <h3>Tokens Metrics</h3>
-                  <div className="flex flex-col gap-4 border border-purple-600 p-4 rounded-md bg-purple-900">
-                    <div className="flex flex-col md:flex-row gap-4 rounded-sm">
-                      <div className="flex flex-nowrap flex-1 p-6 rounded-md bg-purple-950">
-                        <PieActiveArc />
-                      </div>
-                      <div className="flex flex-nowrap flex-1 p-6 rounded-md bg-purple-950"></div>
-                    </div>
-                    <div className="border border-purple-600 p-4 h-20 rounded-sm"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </TabsContent>
-        </Tabs>
+        <div className="w-full flex flex-col gap-4 p-4 border border-purple-400 rounded-md">
+          <h2 className="text-xl">Review</h2>
+          <div className="border-2 border-purple-400 rounded-lg w-full p-2">
+            {review ? (
+              <>
+                <Image
+                  src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f9d0/512.webp"
+                  width={100}
+                  height={100}
+                  alt="emicon"
+                />
+                <p className="text-sm text-purple-50">{balance}</p>
+                <p className="text-sm text-purple-50">{review}</p>
+              </>
+            ) : (
+              <p className="text-sm text-purple-50 text-center">
+                No review yet, please connect or enter your wallet address
+              </p>
+            )}
+          </div>
+        </div>
 
         {/* <Result
           modalOpen={modalOpen}

@@ -16,7 +16,7 @@ export default function Home() {
   const [balance, setBalance] = useState("");
   const [review, setReview] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("This is an error");
+  const [error, setError] = useState("");
   const [difficulty, setDifficulty] = useState("noobie");
 
   const analyzeData = async (event: SyntheticEvent) => {
@@ -80,14 +80,6 @@ export default function Home() {
 
           // Fetch the mint information
           const token = await utl.fetchMint(mint);
-
-          // return {
-          //   name: token?.name || "Unknown Token",
-          //   img: token?.logoURI || null,
-          //   symbol: token?.symbol || "Unknown",
-          //   mint: mint.toString(),
-          //   tokenBalance,
-          // };
 
           return `Name: ${token?.name || "Unknown Token"}, 
                 Image: ${token?.logoURI || "No Image"}, 
